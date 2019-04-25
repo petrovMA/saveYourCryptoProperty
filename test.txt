@@ -1,0 +1,58 @@
+
+curl 'http://209.250.227.9:8732/chains/NetXgtSLGNJvNye/blocks/BKiWmGYXXWBBCHsck7ijRwrqiuxZKntk1WLWuzzvboGsHQyUvrR/helpers/forge/operations'
+-X OPTIONS
+-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0'
+-H 'Accept: */*'
+-H 'Accept-Language: en-US,en;q=0.5' --compressed
+-H 'Access-Control-Request-Method: POST'
+-H 'Access-Control-Request-Headers: content-type'
+-H 'Referer: http://localhost:8080/static/index.html'
+-H 'Origin: http://localhost:8080'
+-H 'Connection: keep-alive'
+
+curl 'http://209.250.227.9:8732/chains/NetXgtSLGNJvNye/blocks/BL56iKo79T7YoupmQPEEbV7Dm9Lh7e9EKH9AM8oiVs3oGGYa6CN/helpers/forge/operations'
+-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0'
+-H 'Accept: */*'
+-H 'Accept-Language: en-US,en;q=0.5' --compressed
+-H 'Content-Type: application/json'
+-H 'Origin: null'
+-H 'Connection: keep-alive'
+--data $'{"branch":"BL56iKo79T7YoupmQPEEbV7Dm9Lh7e9EKH9AM8oiVs3oGGYa6CN","contents":[{"kind":"transaction","fee":"100000","gas_limit":"400000","storage_limit":"60000","amount":"6000000","destination":"KT1A5oZVuRWrejXmLgr7bcsa4fGc1b3WLn5V","parameters":{"prim":"{\'prim\':\'Left\',\'args\':[{\'string\':\'123qweqweqwe\'}]}","args":[]},"source":"tz1QLLbmqmrnfy7pBSzLCsY4RGSoB7t7Y72q","counter":"35388"}]}'
+
+
+
+
+
+
+
+curl 'http://209.250.227.9:8732/chains/NetXgtSLGNJvNye/blocks/BMcfnggx5bXnt1zaQP7vRhUPHwjZijfjNELUc8bXXZKzRJ84yYt/helpers/forge/operations'
+-X OPTIONS
+-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0'
+-H 'Accept: */*'
+-H 'Accept-Language: en-US,en;q=0.5' --compressed
+-H 'Access-Control-Request-Method: POST'
+-H 'Access-Control-Request-Headers: content-type'
+-H 'Referer: http://localhost:8080/static/index.html'
+-H 'Origin: http://localhost:8080'
+-H 'Connection: keep-alive'
+
+curl 'http://209.250.227.9:8732/chains/NetXgtSLGNJvNye/blocks/BMcfnggx5bXnt1zaQP7vRhUPHwjZijfjNELUc8bXXZKzRJ84yYt/helpers/forge/operations'
+-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0'
+-H 'Accept: */*'
+-H 'Accept-Language: en-US,en;q=0.5' --compressed
+-H 'Referer: http://localhost:8080/static/index.html'
+-H 'Content-Type: application/json'
+-H 'Origin: http://localhost:8080'
+-H 'Connection: keep-alive'
+--data '{"branch":"BMcfnggx5bXnt1zaQP7vRhUPHwjZijfjNELUc8bXXZKzRJ84yYt","contents":[{"kind":"transaction","fee":"100000","gas_limit":"400000","storage_limit":"60000","amount":"6000000","destination":"tz1YWtADpgGehcTFqxMapiJcfLgzzL79aDJQ","parameters":{"prim":"Unit","args":[]},"source":"tz1QLLbmqmrnfy7pBSzLCsY4RGSoB7t7Y72q","counter":"35388"}]}'
+
+
+test CURL::
+curl 'http://209.250.227.9:8732/chains/NetXgtSLGNJvNye/blocks/BL56iKo79T7YoupmQPEEbV7Dm9Lh7e9EKH9AM8oiVs3oGGYa6CN/helpers/forge/operations' \
+-H 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0' \
+-H 'Accept: */*' \
+-H 'Accept-Language: en-US,en;q=0.5' --compressed \
+-H 'Content-Type: application/json' \
+-H 'Origin: http://localhost:8080' \
+-H 'Connection: keep-alive' \
+--data $'{"branch":"BL56iKo79T7YoupmQPEEbV7Dm9Lh7e9EKH9AM8oiVs3oGGYa6CN","contents":[{"kind":"transaction","fee":"100000","gas_limit":"400000","storage_limit":"60000","amount":"6000000","destination":"KT1A5oZVuRWrejXmLgr7bcsa4fGc1b3WLn5V","parameters":{"prim":"{"prim":"Left","args":[{"string":"123qweqweqwe"}]}","args":[]},"source":"tz1QLLbmqmrnfy7pBSzLCsY4RGSoB7t7Y72q","counter":"35388"}]}'

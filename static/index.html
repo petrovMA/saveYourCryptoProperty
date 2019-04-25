@@ -9,15 +9,18 @@
   <script src="./libs/tezos.js"></script>
 </head>
 <body class="container">
-<div>Your account <strong><span id="account"></span></strong> has balance: <strong>NADA <span id="balance"></span></strong></div>
+<div>Your account <strong><span id="account"></span></strong> has balance: <strong><span id="balance"></span></strong> ꜩ</div>
+<a href="#" onclick="pingContract()" class="btn btn-primary">Ping</a>
 <br>
 <br>
 <br>
 <div id="msg"></div>
 <script>
   $(function() {
-    loadData();
+    // loadData();
+    pingContract();
   });
 </script>
 </body>
 </html>
+{"prim":"Right","args":[{"prim":"Left","args":[{"prim":"Unit"}]}]}
