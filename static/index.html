@@ -11,16 +11,15 @@
 <body class="container">
 <div>Your account <strong><span id="account"></span></strong> has balance: <strong><span id="balance"></span></strong> ꜩ</div>
 <a href="#" onclick="pingContract()" class="btn btn-primary">Ping</a>
+<a href="#" onclick="receiveProperty()" class="btn btn-primary">Receive</a>
 <br>
 <br>
 <br>
 <div id="msg"></div>
 <script>
   $(function() {
-    // loadData();
-    pingContract();
+    loadData();
   });
 </script>
 </body>
 </html>
-{"prim":"Right","args":[{"prim":"Left","args":[{"prim":"Unit"}]}]}
