@@ -2,8 +2,12 @@
 <html>
 <head>
   <title>My first dApp</title>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
   <script src="./libs/jquery-3.1.1.slim.min.js"></script>
   <script src="./libs/eztz.min.js"></script>
   <script src="./libs/tezos.js"></script>
@@ -13,6 +17,18 @@
 </div>
 <br>
 <br>
+<div class="container">
+  <h2>Unlock by:</h2>
+  <div class="dropdown">
+    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" id="dropdown-unlock">
+      Mnemonic phrase
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Mnemonic phrase</a>
+      <a class="dropdown-item" href="#">Private key</a>
+    </div>
+  </div>
+</div>
 <br>
 <div id="blockchain">
   <div id="mnem">
@@ -24,22 +40,48 @@
       <label for="password">Password:</label>
       <input type="password" class="form-control" id="password">
       <label for="password-id"><span>Show Password</span></label>
-      <input type="checkbox" onclick="myFunction('password')" id="password-id" checked>
+      <input type="checkbox" onclick="hide('password')" id="password-id" checked>
     </div>
+
+    <a href="#" onclick="balanceByPhrase()" class="btn btn-primary">Show Balance</a>
+    <a href="#" onclick="pingContractByPhrase()" class="btn btn-primary">Ping</a>
+    <a href="#" onclick="receivePropertyByPhrase()" class="btn btn-primary">Receive</a>
   </div>
 
-  <a href="#" onclick="balanceByPhrase()" class="btn btn-primary">Show Balance</a>
-  <a href="#" onclick="pingContract()" class="btn btn-primary">Ping</a>
-  <a href="#" onclick="receiveProperty()" class="btn btn-primary">Receive</a>
+  <div id="keys">
+    <div class="form-group">
+      <label for="key">Key:</label>
+      <input type="password" class="form-control" id="key">
+      <label for="key-id"><span>Show Key</span></label>
+      <input type="checkbox" onclick="hide('key')" id="key-id" checked>
+    </div>
+
+    <a href="#" onclick="balanceByKey()" class="btn btn-primary">Show Balance</a>
+    <a href="#" onclick="pingContractByKey()" class="btn btn-primary">Ping</a>
+    <a href="#" onclick="receivePropertyByKey()" class="btn btn-primary">Receive</a>
+  </div>
 </div>
-<div id="keys"></div>
 <script>
   function balanceByPhrase () {
-    let k = getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value)
-    balance(k)
+    balance(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+  }
+  function pingContractByPhrase () {
+    pingContract(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+  }
+  function receivePropertyByPhrase () {
+    receiveProperty(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+  }
+  function balanceByKey () {
+    balance(getKeysByKey(document.getElementById("key").value))
+  }
+  function pingContractByKey () {
+    pingContract(getKeysByKey(document.getElementById("key").value))
+  }
+  function receivePropertyByKey () {
+    receiveProperty(getKeysByKey(document.getElementById("key").value))
   }
 
-  function myFunction (psswdId) {
+  function hide (psswdId) {
     let box = document.getElementById(psswdId)
     if (document.getElementById(psswdId + '-id').checked === true) {
       box.type = 'text'
@@ -47,6 +89,25 @@
       box.type = 'password'
     }
   }
+
+  $('.dropdown-menu').on( 'click', 'a', function() {
+    let text = $(this).html();
+    let htmlText = text + ' <span class="caret"></span>';
+    if(htmlText.startsWith("Mnemonic phrase")) {
+      document.getElementById("keys").style.display = "none";
+      document.getElementById("mnem").style.display = "block";
+    } else {
+      document.getElementById("keys").style.display = "block";
+      document.getElementById("mnem").style.display = "none";
+    }
+    $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+  });
+
+  $(function() {
+    document.getElementById("keys").style.display = "none";
+    document.getElementById("mnem").style.display = "block";
+  });
+
 </script>
 </body>
 </html>
