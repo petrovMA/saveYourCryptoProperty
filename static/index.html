@@ -9,17 +9,44 @@
   <script src="./libs/tezos.js"></script>
 </head>
 <body class="container">
-<div>Your account <strong><span id="account"></span></strong> has balance: <strong><span id="balance"></span></strong> ꜩ</div>
-<a href="#" onclick="pingContract()" class="btn btn-primary">Ping</a>
-<a href="#" onclick="receiveProperty()" class="btn btn-primary">Receive</a>
+<div>Your account <strong><span id="account"></span></strong> has balance: <strong><span id="balance"></span></strong> ꜩ
+</div>
 <br>
 <br>
 <br>
-<div id="msg"></div>
+<div id="blockchain">
+  <div id="mnem">
+    <div class="form-group">
+      <label for="phrase">Mnemonic phrase:</label>
+      <input type="text" class="form-control" id="phrase">
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password">
+      <label for="password-id"><span>Show Password</span></label>
+      <input type="checkbox" onclick="myFunction('password')" id="password-id" checked>
+    </div>
+  </div>
+
+  <a href="#" onclick="balanceByPhrase()" class="btn btn-primary">Show Balance</a>
+  <a href="#" onclick="pingContract()" class="btn btn-primary">Ping</a>
+  <a href="#" onclick="receiveProperty()" class="btn btn-primary">Receive</a>
+</div>
+<div id="keys"></div>
 <script>
-  $(function() {
-    loadData();
-  });
+  function balanceByPhrase () {
+    let k = getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value)
+    balance(k)
+  }
+
+  function myFunction (psswdId) {
+    let box = document.getElementById(psswdId)
+    if (document.getElementById(psswdId + '-id').checked === true) {
+      box.type = 'text'
+    } else {
+      box.type = 'password'
+    }
+  }
 </script>
 </body>
 </html>

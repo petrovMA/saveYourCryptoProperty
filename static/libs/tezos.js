@@ -1,7 +1,7 @@
-function loadData () {
+function balance (keys) {
   eztz.node.setProvider('http://alphanet-node.tzscan.io')
-  let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
-  let keys = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
+  // let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
+  // let keys = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
   let account = keys.pkh
   $('#account').html(account)
   eztz.rpc.getBalance(account).then(function (res) {
@@ -11,12 +11,13 @@ function loadData () {
   })
 }
 
-function pingContract () {
+function pingContract (keys) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
 
-  let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
-  let keys = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
+  // let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
+  // let keys000 = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
+  // let keys = eztz.crypto.extractKeys('edsk3DNDUhzxh9vVZV4PN8KTTP9uLYRVqYedSDr12DuJmaS63cu7DV')
   let account = keys.pkh
 
   let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
@@ -29,12 +30,12 @@ function pingContract () {
     })
 }
 
-function receiveProperty () {
+function receiveProperty (keys) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
 
-  let mnem = 'cruise pill rhythm enter remain flat sense traffic goat paper blossom super disagree mother speed'
-  let keys = eztz.crypto.generateKeys(mnem, 'gugmtvax.nuekgxlw@tezos.example.orgaEVLOPaRD3')
+  // let mnem = 'cruise pill rhythm enter remain flat sense traffic goat paper blossom super disagree mother speed'
+  // let keys = eztz.crypto.generateKeys(mnem, 'gugmtvax.nuekgxlw@tezos.example.orgaEVLOPaRD3')
   let account = keys.pkh
 
   let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
@@ -46,4 +47,12 @@ function receiveProperty () {
     }).catch(function (e) {
       console.log(e)
     })
+}
+
+function getKeysByPhrase (mnem, pass) {
+  return eztz.crypto.generateKeys(mnem, pass)
+}
+
+function getKeysByKey (pKey) {
+  return eztz.crypto.extractKeys(pKey)
 }
