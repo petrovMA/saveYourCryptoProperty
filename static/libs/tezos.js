@@ -8,6 +8,8 @@
 // let keys = eztz.crypto.generateKeys(mnem, 'gugmtvax.nuekgxlw@tezos.example.orgaEVLOPaRD3')
 // let keys = eztz.crypto.extractKeys('edsk4UAnyu14JfR4n7yW3aqr1mAEpWAn6WXiyaAFJnvCP1tCR1ibbA')
 
+// let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
+
 function balance (keys) {
   eztz.node.setProvider('http://alphanet-node.tzscan.io')
   let account = keys.pkh
@@ -19,11 +21,10 @@ function balance (keys) {
   })
 }
 
-function pingContract (keys) {
+function pingContract (keys, addr) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
-  let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
   eztz.contract.send(addr, account, keys, 6, '(Right (Left Unit))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
@@ -33,11 +34,10 @@ function pingContract (keys) {
     })
 }
 
-function receiveProperty (keys) {
+function receiveProperty (keys, addr) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
-  let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
   // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
   eztz.contract.send(addr, account, keys, 6, '(Right (Right (Right (Left Unit))))', 100000, 400000, 60000)
     .then(function (res) {

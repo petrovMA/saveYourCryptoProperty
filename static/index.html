@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My first dApp</title>
+  <title>Save Your Tezos property</title>
   <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -18,7 +18,11 @@
 </div>
 <br>
 <br>
-<div class="container">
+<div class="container" id="blockchain">
+  <div class="form-group">
+    <label for="contract">Contract address:</label>
+    <input type="text" class="form-control" id="contract">
+  </div>
   <h2>Unlock by:</h2>
   <div class="dropdown">
     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" id="dropdown-unlock">
@@ -29,9 +33,6 @@
       <a class="dropdown-item" href="#">Private key</a>
     </div>
   </div>
-</div>
-<br>
-<div id="blockchain">
   <div id="mnem">
     <div class="form-group">
       <label for="phrase">Mnemonic phrase:</label>
@@ -64,22 +65,27 @@
 </div>
 <script>
   function balanceByPhrase () {
-    balance(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+    balance(getKeysByPhrase(document.getElementById('phrase').value, document.getElementById('password').value), document.getElementById('contract').value)
   }
+
   function pingContractByPhrase () {
-    pingContract(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+    pingContract(getKeysByPhrase(document.getElementById('phrase').value, document.getElementById('password').value), document.getElementById('contract').value)
   }
+
   function receivePropertyByPhrase () {
-    receiveProperty(getKeysByPhrase(document.getElementById("phrase").value, document.getElementById("password").value))
+    receiveProperty(getKeysByPhrase(document.getElementById('phrase').value, document.getElementById('password').value), document.getElementById('contract').value)
   }
+
   function balanceByKey () {
-    balance(getKeysByKey(document.getElementById("key").value))
+    balance(getKeysByKey(document.getElementById('key').value), document.getElementById('contract').value)
   }
+
   function pingContractByKey () {
-    pingContract(getKeysByKey(document.getElementById("key").value))
+    pingContract(getKeysByKey(document.getElementById('key').value), document.getElementById('contract').value)
   }
+
   function receivePropertyByKey () {
-    receiveProperty(getKeysByKey(document.getElementById("key").value))
+    receiveProperty(getKeysByKey(document.getElementById('key').value), document.getElementById('contract').value)
   }
 
   function hide (psswdId) {
@@ -91,23 +97,23 @@
     }
   }
 
-  $('.dropdown-menu').on( 'click', 'a', function() {
-    let text = $(this).html();
-    let htmlText = text + ' <span class="caret"></span>';
-    if(htmlText.startsWith("Mnemonic phrase")) {
-      document.getElementById("keys").style.display = "none";
-      document.getElementById("mnem").style.display = "block";
+  $('.dropdown-menu').on('click', 'a', function () {
+    let text = $(this).html()
+    let htmlText = text + ' <span class="caret"></span>'
+    if (htmlText.startsWith('Mnemonic phrase')) {
+      document.getElementById('keys').style.display = 'none'
+      document.getElementById('mnem').style.display = 'block'
     } else {
-      document.getElementById("keys").style.display = "block";
-      document.getElementById("mnem").style.display = "none";
+      document.getElementById('keys').style.display = 'block'
+      document.getElementById('mnem').style.display = 'none'
     }
-    $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
-  });
+    $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText)
+  })
 
-  $(function() {
-    document.getElementById("keys").style.display = "none";
-    document.getElementById("mnem").style.display = "block";
-  });
+  $(function () {
+    document.getElementById('keys').style.display = 'none'
+    document.getElementById('mnem').style.display = 'block'
+  })
 
 </script>
 </body>
