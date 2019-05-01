@@ -9,6 +9,7 @@
 // let keys = eztz.crypto.extractKeys('edsk4UAnyu14JfR4n7yW3aqr1mAEpWAn6WXiyaAFJnvCP1tCR1ibbA')
 
 // let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
+// let addr = 'KT1TpKkwKzGwMrWrGnPp9KixhraD2dtE5wE5'
 
 function balance (keys) {
   eztz.node.setProvider('http://alphanet-node.tzscan.io')
@@ -26,6 +27,19 @@ function pingContract (keys, addr) {
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
   eztz.contract.send(addr, account, keys, 0, '(Right (Left Unit))', 100000, 400000, 60000)
+    .then(function (res) {
+      success(res)
+    })
+    .catch(function (e) {
+      error(e)
+    })
+}
+
+function updateDelay (keys, addr, delay, timeType) {
+  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+  let account = keys.pkh
+  // [{prim: "Left", args: [{prim: "Pair", args: [{int: "2"}, {string: "hour"}]}]}]
+  eztz.contract.send(addr, account, keys, 0, '(Left (Pair ' + delay + ' "' + timeType + '"))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
@@ -53,7 +67,7 @@ function changeOwner (keys, addr, newOwner) {
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
   // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
-  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Right \"'+newOwner+'\")))))', 100000, 400000, 60000)
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Right \"' + newOwner + '\")))))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
