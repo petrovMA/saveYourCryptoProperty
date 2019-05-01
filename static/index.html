@@ -45,7 +45,7 @@
       <input type="checkbox" onclick="hide('password')" id="password-id" checked>
     </div>
 
-    <a href="#" onclick="balanceByPhrase()" class="btn btn-primary">Show Balance</a>
+    <a href="#" onclick="balanceByPhrase()" class="btn btn-primary">Your Balance</a>
     <a href="#" onclick="pingContractByPhrase()" class="btn btn-primary">Ping</a>
     <a href="#" onclick="receivePropertyByPhrase()" class="btn btn-primary">Receive</a>
   </div>
@@ -58,9 +58,15 @@
       <input type="checkbox" onclick="hide('key')" id="key-id" checked>
     </div>
 
-    <a href="#" onclick="balanceByKey()" class="btn btn-primary">Show Balance</a>
+    <a href="#" onclick="balanceByKey()" class="btn btn-primary">Your Balance</a>
     <a href="#" onclick="pingContractByKey()" class="btn btn-primary">Ping</a>
     <a href="#" onclick="receivePropertyByKey()" class="btn btn-primary">Receive</a>
+  </div>
+
+  <div class="form-group">
+    <label for="new-owner">New owner:</label>
+    <input type="text" class="form-control" id="new-owner">
+    <a href="#" onclick="changeOwnerBtn()" class="btn btn-primary">Set new owner</a>
   </div>
 </div>
 <script>
@@ -86,6 +92,14 @@
 
   function receivePropertyByKey () {
     receiveProperty(getKeysByKey(document.getElementById('key').value), document.getElementById('contract').value)
+  }
+
+  function changeOwnerBtn () {
+    if (document.getElementById('keys').style.display === 'block') {
+      changeOwner(getKeysByKey(document.getElementById('key').value), document.getElementById('contract').value, document.getElementById('new-owner').value)
+    } else if (document.getElementById('mnem').style.display === 'block') {
+      changeOwner(getKeysByPhrase(document.getElementById('phrase').value, document.getElementById('password').value), document.getElementById('contract').value, document.getElementById('new-owner').value)
+    }
   }
 
   function hide (psswdId) {

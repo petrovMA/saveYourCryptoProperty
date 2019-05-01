@@ -1,9 +1,9 @@
-// main
+// main tz1QLLbmqmrnfy7pBSzLCsY4RGSoB7t7Y72q
 // let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
 // let keys = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
 // let keys = eztz.crypto.extractKeys('edsk3DNDUhzxh9vVZV4PN8KTTP9uLYRVqYedSDr12DuJmaS63cu7DV')
 
-// receiper tz1YWtADpgGehcTFqxMapiJcfLgzzL79aDJQ
+// recp tz1YWtADpgGehcTFqxMapiJcfLgzzL79aDJQ
 // let mnem = 'cruise pill rhythm enter remain flat sense traffic goat paper blossom super disagree mother speed'
 // let keys = eztz.crypto.generateKeys(mnem, 'gugmtvax.nuekgxlw@tezos.example.orgaEVLOPaRD3')
 // let keys = eztz.crypto.extractKeys('edsk4UAnyu14JfR4n7yW3aqr1mAEpWAn6WXiyaAFJnvCP1tCR1ibbA')
@@ -25,7 +25,7 @@ function pingContract (keys, addr) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
-  eztz.contract.send(addr, account, keys, 6, '(Right (Left Unit))', 100000, 400000, 60000)
+  eztz.contract.send(addr, account, keys, 0, '(Right (Left Unit))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
@@ -39,7 +39,21 @@ function receiveProperty (keys, addr) {
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
   // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
-  eztz.contract.send(addr, account, keys, 6, '(Right (Right (Right (Left Unit))))', 100000, 400000, 60000)
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Left Unit))))', 100000, 400000, 60000)
+    .then(function (res) {
+      success(res)
+    })
+    .catch(function (e) {
+      error(e)
+    })
+}
+
+function changeOwner (keys, addr, newOwner) {
+  // eztz.node.setDebugMode(true)
+  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+  let account = keys.pkh
+  // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Right \"'+newOwner+'\")))))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
