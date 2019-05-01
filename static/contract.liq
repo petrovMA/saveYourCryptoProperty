@@ -45,7 +45,7 @@ let%entry receiveProperty () storage =
   then ([Account.transfer ~dest:storage.property_recipient ~amount:(Current.balance())], storage)
   else Current.failwith ("Too early ", Current.time())
 
-let%entry setReceiper (recipient: key_hash) storage =
+let%entry setRecipient (recipient: key_hash) storage =
   check_sender storage.owner;
   ([], storage.property_recipient <- recipient)
 

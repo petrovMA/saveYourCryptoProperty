@@ -67,27 +67,54 @@
 
   <div class="form-group">
     <label for="delay-time">Enter time:</label>
-    <input type="text" class="form-control" id="delay-time">
+    <input type="number" class="form-control" id="delay-time">
     <label for="time-type">Time measure type (year, month, day, hour, minute):</label>
     <input type="text" class="form-control" id="time-type">
     <a href="#" onclick="updateDelayBtn()" class="btn btn-primary">Change delay</a>
   </div>
+
+  <div class="form-group">
+    <label for="dest">Destination address:</label>
+    <input type="text" class="form-control" id="dest">
+    <label for="amount">Amount ꜩ:</label>
+    <input type="number"  step="0.000001" class="form-control" id="amount">
+    <a href="#" onclick="withdrawBtn()" class="btn btn-primary">Withdraw</a>
+  </div>
+
+  <div class="form-group">
+    <label for="recipient">Recipient address:</label>
+    <input type="text" class="form-control" id="recipient">
+    <a href="#" onclick="recipientBtn()" class="btn btn-primary">Set recipient</a>
+  </div>
 </div>
 <script>
   function balanceBtn () {
-    balance(getKeys(), document.getElementById('contract').value)
+    balance(
+      getKeys(),
+      document.getElementById('contract').value
+    )
   }
 
   function pingContractBtn () {
-    pingContract(getKeys(), document.getElementById('contract').value)
+    pingContract(
+      getKeys(),
+      document.getElementById('contract').value
+    )
   }
 
   function receivePropertyBtn () {
-    receiveProperty(getKeys(), document.getElementById('contract').value)
+    receiveProperty(
+      getKeys(),
+      document.getElementById('contract').value
+    )
   }
 
   function changeOwnerBtn () {
-    changeOwner(getKeys(), document.getElementById('contract').value, document.getElementById('new-owner').value)
+    changeOwner(
+      getKeys(),
+      document.getElementById('contract').value,
+      document.getElementById('new-owner').value
+    )
   }
 
   function updateDelayBtn () {
@@ -96,6 +123,23 @@
       document.getElementById('contract').value,
       document.getElementById('delay-time').value,
       document.getElementById('time-type').value
+    )
+  }
+
+  function withdrawBtn () {
+    withdraw(
+      getKeys(),
+      document.getElementById('contract').value,
+      document.getElementById('dest').value,
+      document.getElementById('amount').value
+    )
+  }
+
+  function recipientBtn () {
+    setRecipient(
+      getKeys(),
+      document.getElementById('contract').value,
+      document.getElementById('recipient').value
     )
   }
 

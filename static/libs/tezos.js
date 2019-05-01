@@ -1,16 +1,3 @@
-// main tz1QLLbmqmrnfy7pBSzLCsY4RGSoB7t7Y72q
-// let mnem = 'course casual original captain luggage husband knock october balance learn floor phone wheat bike snake'
-// let keys = eztz.crypto.generateKeys(mnem, 'iyuxlmea.qitsymvq@tezos.example.orgd0fe1QkS4V')
-// let keys = eztz.crypto.extractKeys('edsk3DNDUhzxh9vVZV4PN8KTTP9uLYRVqYedSDr12DuJmaS63cu7DV')
-
-// recp tz1YWtADpgGehcTFqxMapiJcfLgzzL79aDJQ
-// let mnem = 'cruise pill rhythm enter remain flat sense traffic goat paper blossom super disagree mother speed'
-// let keys = eztz.crypto.generateKeys(mnem, 'gugmtvax.nuekgxlw@tezos.example.orgaEVLOPaRD3')
-// let keys = eztz.crypto.extractKeys('edsk4UAnyu14JfR4n7yW3aqr1mAEpWAn6WXiyaAFJnvCP1tCR1ibbA')
-
-// let addr = 'KT1REci1iEvCLJYYigY3TupRvBugRmdWNWTv'
-// let addr = 'KT1TpKkwKzGwMrWrGnPp9KixhraD2dtE5wE5'
-
 function balance (keys) {
   eztz.node.setProvider('http://alphanet-node.tzscan.io')
   let account = keys.pkh
@@ -20,6 +7,19 @@ function balance (keys) {
   }).catch(function (e) {
     console.log(e)
   })
+}
+
+function updateDelay (keys, addr, delay, timeType) {
+  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+  let account = keys.pkh
+  // [{prim: "Left", args: [{prim: "Pair", args: [{int: "2"}, {string: "hour"}]}]}]
+  eztz.contract.send(addr, account, keys, 0, '(Left (Pair ' + delay + ' "' + timeType + '"))', 100000, 400000, 60000)
+    .then(function (res) {
+      success(res)
+    })
+    .catch(function (e) {
+      error(e)
+    })
 }
 
 function pingContract (keys, addr) {
@@ -35,11 +35,11 @@ function pingContract (keys, addr) {
     })
 }
 
-function updateDelay (keys, addr, delay, timeType) {
+function withdraw (keys, addr, dest, tz) {
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
-  // [{prim: "Left", args: [{prim: "Pair", args: [{int: "2"}, {string: "hour"}]}]}]
-  eztz.contract.send(addr, account, keys, 0, '(Left (Pair ' + delay + ' "' + timeType + '"))', 100000, 400000, 60000)
+  let mtz = tz * 1000000
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Left (Pair "' + dest + '" ' + mtz + '))))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
@@ -62,12 +62,26 @@ function receiveProperty (keys, addr) {
     })
 }
 
+function setRecipient (keys, addr, recipient) {
+  // eztz.node.setDebugMode(true)
+  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+  let account = keys.pkh
+  // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Left "' + recipient + '")))))', 100000, 400000, 60000)
+    .then(function (res) {
+      success(res)
+    })
+    .catch(function (e) {
+      error(e)
+    })
+}
+
 function changeOwner (keys, addr, newOwner) {
   // eztz.node.setDebugMode(true)
   eztz.node.setProvider('https://alphanet-node.tzscan.io')
   let account = keys.pkh
   // [{prim: "Right", args: [{prim: "Right", args: [{prim: "Left", args: [{prim: "Unit"}]}]}]}]
-  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Right \"' + newOwner + '\")))))', 100000, 400000, 60000)
+  eztz.contract.send(addr, account, keys, 0, '(Right (Right (Right (Right (Right "' + newOwner + '")))))', 100000, 400000, 60000)
     .then(function (res) {
       success(res)
     })
