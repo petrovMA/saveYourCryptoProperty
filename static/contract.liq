@@ -17,7 +17,7 @@ let%init storage
     else if timeType = "day" then delay*24*60*60
     else if timeType = "hour" then delay*60*60
     else if timeType = "minute" then delay*60
-    else Current.failwith ("Unsupported time type ", timeType);
+    else Current.failwith ("Unsupported time type. Please select 'year', 'month', 'day', 'hour' or 'minute'.", timeType);
   last_ping = Current.time();
   owner = owner
 }
@@ -29,7 +29,7 @@ let%entry updateMaxDelay ((delay: int), (timeType: string)) storage =
   else if timeType = "day" then ([], storage.delay <- delay*24*60*60)
   else if timeType = "hour" then ([], storage.delay <- delay*60*60)
   else if timeType = "minute" then ([], storage.delay <- delay*60)
-  else Current.failwith ("Unsupported time type ", timeType)
+  else Current.failwith ("Unsupported time type. Please select 'year', 'month', 'day', 'hour' or 'minute'.", timeType)
 
 let%entry ping () storage =
   check_sender storage.owner;
@@ -55,4 +55,4 @@ let%entry changeOwner (new_owner: address) storage =
 
 let check_sender owner =
   if owner <> Current.sender()
-  then Current.failwith ("Not allowed operation for ", Current.sender())
+  then Current.failwith ("Not allowed operation for this address.", Current.sender())
