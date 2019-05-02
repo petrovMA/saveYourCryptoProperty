@@ -2,14 +2,14 @@
 <html>
 <head>
   <title>Save Your Tezos property</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/popper.min.js"></script>
+  <script src="scripts/bootstrap.min.js"></script>
 
-  <script src="./libs/jquery-3.1.1.slim.min.js"></script>
-  <script src="./libs/eztz.min.js"></script>
-  <script src="./libs/tezos.js"></script>
+  <script src="scripts/jquery-3.1.1.slim.min.js"></script>
+  <script src="scripts/eztz.min.js"></script>
+  <script src="scripts/tezos.js"></script>
 </head>
 <body class="container">
 <div>Contract source code: <a href="contract.liq" target="_blank">file</a>
@@ -31,7 +31,7 @@
     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" id="dropdown-unlock">
       Mnemonic phrase
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" id="dropdown-menu-id">
       <a class="dropdown-item" href="#">Mnemonic phrase</a>
       <a class="dropdown-item" href="#">Private key</a>
     </div>
@@ -146,7 +146,7 @@
     )
   }
 
-  $('.dropdown-menu').on('click', 'a', function () {
+  $('#dropdown-menu-id').on('click', 'a', function () {
     let text = $(this).html()
     let htmlText = text + ' <span class="caret"></span>'
     if (htmlText.startsWith('Mnemonic phrase')) {
