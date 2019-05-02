@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>How to use "Save Your Tezos property" contract</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body class="container">
+<h3>Warning! Use only Tezos Alpha-net</h3>
+<p>1. Deploy a smart contract on the Tezos network. <a href="contract.liq" target="_blank">file</a>
+  <a href="https://github.com/petrovma92/saveYourCryptoProperty/blob/master/static/contract.liq"
+     target="_blank">GitHub</a> (This step will be more simple in the near future, via "deploy" button)</p>
+<p>2. Enter the new contract address in the <b>"Contract address"</b> field</p>
+<p>3. Now you can change the contract parameters using this methods:
+  <br/> <b>"Your Balance"</b> - show balance (method for "recipient" and "owner" accounts)
+  <br/> <b>"Ping"</b> - set the current time for <b>ping time</b> (method for "owner" account).
+  <br/> <b>"Receive"</b> - Recipient can get properties (all ꜩ from contract) when the difference between the current
+  time and the <b>ping time</b> is greater than the <b>delay time</b> (method for "recipient" account).
+  <br/> <b>"Set new owner"</b> - change the owner of the smart contract property (method for "owner" account).
+  <br/> <b>"Change delay"</b> - Set a new <b>delay time</b> (method for "owner" account).
+  <br/> <b>"Withdraw"</b> - Withdrawal of some ꜩ from the smart contract (method for the owner).(method for "owner" account).
+  <br/> <b>"Set recipient"</b> - Set a new recipient (method for "owner" account).
+  <br/> <span
+    style="color: gray; "><b>"Delegate"</b> - Delegate smart-contract ꜩ tokens (method for "owner" account).</span>
+  <span style="color: red; "><b>[In development]</b></span>.</p>
+</body>
+</html>

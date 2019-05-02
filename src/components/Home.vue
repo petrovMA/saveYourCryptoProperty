@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
         <h1><a href="../../static/index.html">Go to Tezos dApp!!!</a></h1>
+        <h1><a href="../../static/howTo.html">How to use?</a></h1>
   </div>
 </template>
 
