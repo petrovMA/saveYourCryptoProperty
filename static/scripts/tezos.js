@@ -90,6 +90,19 @@ function changeOwner (keys, addr, newOwner) {
     })
 }
 
+function watchContract(addr) {
+  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+  
+  eztz.contract.watch(addr, 2, function(s){
+    console.log("New storage", s);
+    // var candidateList = s.args[0];
+    // for (var i=1; i<= candidateList.length; i++) {
+    //   $("#candidate-" + i).html(candidateList[i-1].args[1].int);
+    // }
+    // $("#msg").html("");
+  });
+}
+
 function success (res) {
   try {
     console.log(res)
@@ -134,3 +147,267 @@ function getKeysByPhrase (mnem, pass) {
 function getKeysByKey (pKey) {
   return eztz.crypto.extractKeys(pKey)
 }
+
+function deploy (keys) {
+  eztz.rpc.originate(keys, 0, contract, 'Unit', false, false, false, 5000, 100000, 500).then(console.log);
+}
+
+
+let  contract =
+  'parameter\n' +
+  '  (or :_entries\n' +
+  '     (pair %_Liq_entry_updateMaxDelay int string)\n' +
+  '     (or (unit %_Liq_entry_ping)\n' +
+  '         (or (pair %_Liq_entry_withdraw key_hash mutez)\n' +
+  '             (or (unit %_Liq_entry_receiveProperty)\n' +
+  '                 (or (key_hash %_Liq_entry_setReceiper) (address %_Liq_entry_changeOwner))))));\n' +
+  'storage\n' +
+  '  (pair :storage_\n' +
+  '     (timestamp %last_ping)\n' +
+  '     (pair (int %delay) (pair (address %owner) (key_hash %property_recipient))));\n' +
+  'code { DUP ;\n' +
+  '       DIP { CDR @storage_slash_1 } ;\n' +
+  '       CAR @parameter_slash_2 ;\n' +
+  '       LAMBDA @check_sender\n' +
+  '         address\n' +
+  '         unit\n' +
+  '         { RENAME @owner_slash_3 ;\n' +
+  '           SENDER ;\n' +
+  '           DUUP @owner ;\n' +
+  '           COMPARE ;\n' +
+  '           NEQ ;\n' +
+  '           IF { SENDER ; PUSH string "Not allowed operation for " ; PAIR ; FAILWITH }\n' +
+  '              { UNIT } ;\n' +
+  '           DIP { DROP } } ;\n' +
+  '       DUUP @parameter ;\n' +
+  '       IF_LEFT\n' +
+  '         { RENAME @_delay_timeType_slash_5 ;\n' +
+  '           DUUUUP @storage ;\n' +
+  '           DUUP ;\n' +
+  '           CAR @delay ;\n' +
+  '           DUUUP ;\n' +
+  '           CDR @timeType ;\n' +
+  '           DUUUUUP @check_sender ;\n' +
+  '           DUUUUP @storage ;\n' +
+  '           CDDAR %owner ;\n' +
+  '           EXEC ;\n' +
+  '           DROP ;\n' +
+  '           PUSH string "year" ;\n' +
+  '           DUUP @timeType ;\n' +
+  '           COMPARE ;\n' +
+  '           EQ ;\n' +
+  '           IF { DUUUP @storage ;\n' +
+  '                DUP ;\n' +
+  '                CAR %last_ping ;\n' +
+  '                SWAP ;\n' +
+  '                CDR ;\n' +
+  '                CDR ;\n' +
+  '                PUSH int 60 ;\n' +
+  '                PUSH int 60 ;\n' +
+  '                PUSH int 24 ;\n' +
+  '                PUSH int 365 ;\n' +
+  '                DUUUUUUUUP @delay ;\n' +
+  '                MUL ;\n' +
+  '                MUL ;\n' +
+  '                MUL ;\n' +
+  '                MUL ;\n' +
+  '                PAIR %delay ;\n' +
+  '                SWAP ;\n' +
+  '                PAIR %last_ping ;\n' +
+  '                NIL operation ;\n' +
+  '                PAIR }\n' +
+  '              { PUSH string "month" ;\n' +
+  '                DUUP @timeType ;\n' +
+  '                COMPARE ;\n' +
+  '                EQ ;\n' +
+  '                IF { DUUUP @storage ;\n' +
+  '                     DUP ;\n' +
+  '                     CAR %last_ping ;\n' +
+  '                     SWAP ;\n' +
+  '                     CDR ;\n' +
+  '                     CDR ;\n' +
+  '                     PUSH int 60 ;\n' +
+  '                     PUSH int 60 ;\n' +
+  '                     PUSH int 24 ;\n' +
+  '                     PUSH int 30 ;\n' +
+  '                     DUUUUUUUUP @delay ;\n' +
+  '                     MUL ;\n' +
+  '                     MUL ;\n' +
+  '                     MUL ;\n' +
+  '                     MUL ;\n' +
+  '                     PAIR %delay ;\n' +
+  '                     SWAP ;\n' +
+  '                     PAIR %last_ping ;\n' +
+  '                     NIL operation ;\n' +
+  '                     PAIR }\n' +
+  '                   { PUSH string "day" ;\n' +
+  '                     DUUP @timeType ;\n' +
+  '                     COMPARE ;\n' +
+  '                     EQ ;\n' +
+  '                     IF { DUUUP @storage ;\n' +
+  '                          DUP ;\n' +
+  '                          CAR %last_ping ;\n' +
+  '                          SWAP ;\n' +
+  '                          CDR ;\n' +
+  '                          CDR ;\n' +
+  '                          PUSH int 60 ;\n' +
+  '                          PUSH int 60 ;\n' +
+  '                          PUSH int 24 ;\n' +
+  '                          DUUUUUUUP @delay ;\n' +
+  '                          MUL ;\n' +
+  '                          MUL ;\n' +
+  '                          MUL ;\n' +
+  '                          PAIR %delay ;\n' +
+  '                          SWAP ;\n' +
+  '                          PAIR %last_ping ;\n' +
+  '                          NIL operation ;\n' +
+  '                          PAIR }\n' +
+  '                        { PUSH string "hour" ;\n' +
+  '                          DUUP @timeType ;\n' +
+  '                          COMPARE ;\n' +
+  '                          EQ ;\n' +
+  '                          IF { DUUUP @storage ;\n' +
+  '                               DUP ;\n' +
+  '                               CAR %last_ping ;\n' +
+  '                               SWAP ;\n' +
+  '                               CDR ;\n' +
+  '                               CDR ;\n' +
+  '                               PUSH int 60 ;\n' +
+  '                               PUSH int 60 ;\n' +
+  '                               DUUUUUUP @delay ;\n' +
+  '                               MUL ;\n' +
+  '                               MUL ;\n' +
+  '                               PAIR %delay ;\n' +
+  '                               SWAP ;\n' +
+  '                               PAIR %last_ping ;\n' +
+  '                               NIL operation ;\n' +
+  '                               PAIR }\n' +
+  '                             { PUSH string "minute" ;\n' +
+  '                               DUUP @timeType ;\n' +
+  '                               COMPARE ;\n' +
+  '                               EQ ;\n' +
+  '                               IF { DUUUP @storage ;\n' +
+  '                                    DUP ;\n' +
+  '                                    CAR %last_ping ;\n' +
+  '                                    SWAP ;\n' +
+  '                                    CDR ;\n' +
+  '                                    CDR ;\n' +
+  '                                    PUSH int 60 ;\n' +
+  '                                    DUUUUUP @delay ;\n' +
+  '                                    MUL ;\n' +
+  '                                    PAIR %delay ;\n' +
+  '                                    SWAP ;\n' +
+  '                                    PAIR %last_ping ;\n' +
+  '                                    NIL operation ;\n' +
+  '                                    PAIR }\n' +
+  '                                  { DUP @timeType ; PUSH string "Unsupported time type " ; PAIR ; FAILWITH } } } } } ;\n' +
+  '           DIP { DROP ; DROP ; DROP ; DROP } }\n' +
+  '         { IF_LEFT\n' +
+  '             { RENAME @__slash_9 ;\n' +
+  '               DUUUUP @storage ;\n' +
+  '               DUUUP @check_sender ;\n' +
+  '               DUUP @storage ;\n' +
+  '               CDDAR %owner ;\n' +
+  '               EXEC ;\n' +
+  '               DROP ;\n' +
+  '               DIP { DROP } ;\n' +
+  '               CDR ;\n' +
+  '               NOW ;\n' +
+  '               PAIR %last_ping ;\n' +
+  '               NIL operation ;\n' +
+  '               PAIR }\n' +
+  '             { IF_LEFT\n' +
+  '                 { RENAME @_dest_amount_slash_11 ;\n' +
+  '                   DUUUUP @storage ;\n' +
+  '                   DUUUP @check_sender ;\n' +
+  '                   DUUP @storage ;\n' +
+  '                   CDDAR %owner ;\n' +
+  '                   EXEC ;\n' +
+  '                   DROP ;\n' +
+  '                   DUUP ;\n' +
+  '                   CAR @dest ;\n' +
+  '                   IMPLICIT_ACCOUNT ;\n' +
+  '                   DUUUP ;\n' +
+  '                   DIIIP { DROP } ;\n' +
+  '                   CDR @amount ;\n' +
+  '                   UNIT ;\n' +
+  '                   TRANSFER_TOKENS @transfer172 ;\n' +
+  '                   SWAP ;\n' +
+  '                   NIL operation ;\n' +
+  '                   DUUUP ;\n' +
+  '                   DIIIP { DROP } ;\n' +
+  '                   CONS ;\n' +
+  '                   PAIR }\n' +
+  '                 { IF_LEFT\n' +
+  '                     { RENAME @__slash_16 ;\n' +
+  '                       DUUUUP @storage ;\n' +
+  '                       DUUUP @check_sender ;\n' +
+  '                       DUUP @storage ;\n' +
+  '                       CDDDR %property_recipient ;\n' +
+  '                       IMPLICIT_ACCOUNT ;\n' +
+  '                       ADDRESS ;\n' +
+  '                       EXEC ;\n' +
+  '                       DROP ;\n' +
+  '                       NOW ;\n' +
+  '                       DUUP @storage ;\n' +
+  '                       CDAR %delay ;\n' +
+  '                       DUUUP @storage ;\n' +
+  '                       CAR %last_ping ;\n' +
+  '                       ADD ;\n' +
+  '                       COMPARE ;\n' +
+  '                       LT ;\n' +
+  '                       IF { DUP @storage ;\n' +
+  '                            CDDDR %property_recipient ;\n' +
+  '                            IMPLICIT_ACCOUNT ;\n' +
+  '                            BALANCE ;\n' +
+  '                            UNIT ;\n' +
+  '                            TRANSFER_TOKENS @transfer203 ;\n' +
+  '                            DUUP @storage ;\n' +
+  '                            NIL operation ;\n' +
+  '                            DUUUP @transfer203 ;\n' +
+  '                            DIIIP { DROP } ;\n' +
+  '                            CONS ;\n' +
+  '                            PAIR }\n' +
+  '                          { NOW ; PUSH string "Too early " ; PAIR ; FAILWITH } ;\n' +
+  '                       DIP { DROP ; DROP } }\n' +
+  '                     { IF_LEFT\n' +
+  '                         { RENAME @recipient_slash_19 ;\n' +
+  '                           DUUUUP @storage ;\n' +
+  '                           DUUUP @check_sender ;\n' +
+  '                           DUUP @storage ;\n' +
+  '                           CDDAR %owner ;\n' +
+  '                           EXEC ;\n' +
+  '                           DROP ;\n' +
+  '                           SWAP ;\n' +
+  '                           DUUP ;\n' +
+  '                           CDDAR %owner ;\n' +
+  '                           PAIR %owner %property_recipient ;\n' +
+  '                           DUUP ;\n' +
+  '                           CDAR %delay ;\n' +
+  '                           PAIR %delay ;\n' +
+  '                           SWAP ;\n' +
+  '                           CAR %last_ping ;\n' +
+  '                           PAIR %last_ping ;\n' +
+  '                           NIL operation ;\n' +
+  '                           PAIR }\n' +
+  '                         { RENAME @new_owner_slash_21 ;\n' +
+  '                           DUUUUP @storage ;\n' +
+  '                           DUUUP @check_sender ;\n' +
+  '                           DUUP @storage ;\n' +
+  '                           CDDAR %owner ;\n' +
+  '                           EXEC ;\n' +
+  '                           DROP ;\n' +
+  '                           DUP @storage ;\n' +
+  '                           CDDDR %property_recipient ;\n' +
+  '                           DUUUP @new_owner ;\n' +
+  '                           DIIIP { DROP } ;\n' +
+  '                           PAIR %owner %property_recipient ;\n' +
+  '                           DUUP ;\n' +
+  '                           CDAR %delay ;\n' +
+  '                           PAIR %delay ;\n' +
+  '                           SWAP ;\n' +
+  '                           CAR %last_ping ;\n' +
+  '                           PAIR %last_ping ;\n' +
+  '                           NIL operation ;\n' +
+  '                           PAIR } } } } } ;\n' +
+  '       DIP { DROP ; DROP ; DROP } };\n'
