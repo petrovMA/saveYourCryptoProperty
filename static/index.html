@@ -12,131 +12,147 @@
   <script src="scripts/tezos.js"></script>
 </head>
 <body class="container">
-<div>Contract source code: <a href="contract.liq" target="_blank">file</a>
+<div><strong>First deploy contract!</strong> Contract source code: <a href="contract.liq" target="_blank">file</a>
   <a href="https://github.com/petrovma92/saveYourCryptoProperty/blob/master/static/contract.liq"
      target="_blank">GitHub</a>
 </div>
 <div id="alerts"></div>
 <div>Your account <strong><span id="account"></span></strong> has balance: <strong><span id="balance"></span></strong> ꜩ
 </div>
-<br>
+<div>Contract owner: <strong><span id="contract-owner-info"></span></strong></div>
+<div>Last ping: <strong><span id="last-ping-info"></span></strong></div>
+<div>Delay: <strong><span id="delay-info"></span></strong></div>
+<div>Recipient: <strong><span id="recipient-info"></span></strong></div>
 <div class="container" id="blockchain">
   <div>
     <label for="contract">Contract address:</label>
     <div class="input-group">
       <input type="text" class="form-control" id="contract">
-      <span class="input-group-btn">
-      <!--<button onclick="contractInfo()" class="btn btn-success">Contract info</button>-->
+      <span class="input-group-btn" style="padding-left: 1.5rem">
+      <button onclick="contractInfo()" class="btn btn-success">Storage data</button>
       </span>
     </div>
-    <h2>Unlock by:</h2>
+
+    <div style="padding-top: 1.5rem">
+      <h4>Unlock by:</h4>
+      <div class="dropdown">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                id="dropdown-unlock">
+          Mnemonic phrase
+        </button>
+        <div class="dropdown-menu" id="dropdown-menu-id">
+          <a class="dropdown-item" href="#">Mnemonic phrase</a>
+          <a class="dropdown-item" href="#">Private key</a>
+        </div>
+      </div>
+
+      <div id="mnem">
+        <div class="form-group" style="display:flex; padding-top: .5rem">
+          <label class="input-group-btn" for="phrase">Mnemonic phrase:</label>
+          <input type="text" class="form-control" id="phrase">
+        </div>
+        <div class="form-group" style="display:flex">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+        <div>
+          <label for="password-id"><span>Show Password</span></label>
+          <input type="checkbox" onclick="hide('password')" id="password-id">
+        </div>
+      </div>
+
+      <div id="keys">
+        <div class="form-group" style="display:flex; padding-top: .5rem">
+          <label for="key">Key:</label>
+          <input type="password" class="form-control" id="key">
+        </div>
+        <div>
+          <label for="key-id"><span>Show Key</span></label>
+          <input type="checkbox" onclick="hide('key')" id="key-id">
+        </div>
+      </div>
+    </div>
+    <br>
+
     <div class="dropdown">
-      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" id="dropdown-unlock">
-        Mnemonic phrase
+      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" id="dropdown-method">
+        Show balance
       </button>
-      <div class="dropdown-menu" id="dropdown-menu-id">
-        <a class="dropdown-item" href="#">Mnemonic phrase</a>
-        <a class="dropdown-item" href="#">Private key</a>
+      <div class="dropdown-menu" id="dropdown-menu-method-id">
+        <a class="dropdown-item" href="#">Show balance</a>
+        <a class="dropdown-item" href="#">Ping contract</a>
+        <a class="dropdown-item" href="#">Receive property</a>
+        <a class="dropdown-item" href="#">Deploy new contract</a>
+        <a class="dropdown-item" href="#">Set new contract owner</a>
+        <a class="dropdown-item" href="#">Change delay</a>
+        <a class="dropdown-item" href="#">Withdraw property</a>
+        <a class="dropdown-item" href="#">Set new recipient</a>
+        <a class="dropdown-item" href="#">Delegate</a>
+      </div>
+    </div>
+    <br>
+
+    <div id="form-balance">
+      <button onclick="balanceBtn()" class="btn btn-primary">Your Balance</button>
+    </div>
+
+    <div id="form-ping">
+      <button onclick="pingContractBtn()" class="btn btn-primary">Ping</button>
+    </div>
+
+    <div id="form-receive">
+      <button onclick="receivePropertyBtn()" class="btn btn-primary">Receive</button>
+    </div>
+
+    <div id="form-deploy">
+      <button onclick="deployContract()" class="btn btn-success" title="This function in development..." disabled>Deploy
+        contract (In development)
+      </button>
+    </div>
+
+    <div id="form-delegate">
+      <button onclick="deployContract()" class="btn btn-secondary" title="This function in development..." disabled>Delegate
+        contracts <strong>ꜩ</strong> (In development)
+      </button>
+    </div>
+
+    <div class="form-group" id="form-new-owner">
+      <label for="new-owner">New owner:</label>
+      <input type="text" class="form-control" id="new-owner">
+      <div style="padding: 1rem">
+        <a href="#" onclick="changeOwnerBtn()" class="btn btn-primary">Set new owner</a>
       </div>
     </div>
 
-    <div id="mnem">
-      <div class="form-group" style="display:flex; padding-top: .5rem">
-        <label class="input-group-btn" for="phrase">Mnemonic phrase:</label>
-        <input type="text" class="form-control" id="phrase">
-      </div>
-      <div class="form-group" style="display:flex">
-        <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password">
-      </div>
-      <div>
-        <label for="password-id"><span>Show Password</span></label>
-        <input type="checkbox" onclick="hide('password')" id="password-id">
+    <div class="form-group" id="form-change-delay">
+      <label for="delay-time">Enter time:</label>
+      <input type="number" class="form-control" id="delay-time">
+      <label for="time-type">Time measure type (year, month, day, hour, minute):</label>
+      <input type="text" class="form-control" id="time-type">
+      <div style="padding: 1rem">
+        <a href="#" onclick="updateDelayBtn()" class="btn btn-primary">Change delay</a>
       </div>
     </div>
 
-    <div id="keys">
-      <div class="form-group" style="display:flex; padding-top: .5rem">
-        <label for="key">Key:</label>
-        <input type="password" class="form-control" id="key">
+    <div class="form-group" id="form-withdraw">
+      <label for="dest">Destination address:</label>
+      <input type="text" class="form-control" id="dest">
+      <label for="amount">Amount ꜩ:</label>
+      <input type="number" step="0.000001" class="form-control" id="amount">
+      <div style="padding: 1rem">
+        <a href="#" onclick="withdrawBtn()" class="btn btn-primary">Withdraw</a>
       </div>
-      <div>
-        <label for="key-id"><span>Show Key</span></label>
-        <input type="checkbox" onclick="hide('key')" id="key-id">
+    </div>
+
+    <div class="form-group" id="form-set-recipient">
+      <label for="recipient">Recipient address:</label>
+      <input type="text" class="form-control" id="recipient">
+      <div style="padding: 1rem">
+        <a href="#" onclick="recipientBtn()" class="btn btn-primary">Set recipient</a>
       </div>
     </div>
-  </div>
-  <br>
 
-  <div class="dropdown">
-    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" id="dropdown-method">
-      Show balance
-    </button>
-    <div class="dropdown-menu" id="dropdown-menu-method-id">
-      <a class="dropdown-item" href="#">Show balance</a>
-      <a class="dropdown-item" href="#">Ping contract</a>
-      <a class="dropdown-item" href="#">Receive property</a>
-      <a class="dropdown-item" href="#">Deploy new contract</a>
-      <a class="dropdown-item" href="#">Set new contract owner</a>
-      <a class="dropdown-item" href="#">Change delay</a>
-      <a class="dropdown-item" href="#">Withdraw property</a>
-      <a class="dropdown-item" href="#">Set new recipient</a>
-    </div>
-  </div>
-  <br>
 
-  <div id="form-balance">
-    <button onclick="balanceBtn()" class="btn btn-primary">Your Balance</button>
-  </div>
-
-  <div id="form-ping">
-    <button onclick="pingContractBtn()" class="btn btn-primary">Ping</button>
-  </div>
-
-  <div id="form-receive">
-    <button onclick="receivePropertyBtn()" class="btn btn-primary">Receive</button>
-  </div>
-
-  <div id="form-deploy">
-    <button onclick="deployContract()" class="btn btn-success" title="This function in development..." disabled>Deploy
-      contract (In development)
-    </button>
-  </div>
-
-  <div class="form-group" id="form-new-owner">
-    <label for="new-owner">New owner:</label>
-    <input type="text" class="form-control" id="new-owner">
-    <div style="padding: 1rem">
-      <a href="#" onclick="changeOwnerBtn()" class="btn btn-primary">Set new owner</a>
-    </div>
-  </div>
-
-  <div class="form-group" id="form-change-delay">
-    <label for="delay-time">Enter time:</label>
-    <input type="number" class="form-control" id="delay-time">
-    <label for="time-type">Time measure type (year, month, day, hour, minute):</label>
-    <input type="text" class="form-control" id="time-type">
-    <div style="padding: 1rem">
-      <a href="#" onclick="updateDelayBtn()" class="btn btn-primary">Change delay</a>
-    </div>
-  </div>
-
-  <div class="form-group" id="form-withdraw">
-    <label for="dest">Destination address:</label>
-    <input type="text" class="form-control" id="dest">
-    <label for="amount">Amount ꜩ:</label>
-    <input type="number" step="0.000001" class="form-control" id="amount">
-    <div style="padding: 1rem">
-      <a href="#" onclick="withdrawBtn()" class="btn btn-primary">Withdraw</a>
-    </div>
-  </div>
-
-  <div class="form-group" id="form-set-recipient">
-    <label for="recipient">Recipient address:</label>
-    <input type="text" class="form-control" id="recipient">
-    <div style="padding: 1rem">
-      <a href="#" onclick="recipientBtn()" class="btn btn-primary">Set recipient</a>
-    </div>
   </div>
 </div>
 <script>
@@ -227,11 +243,11 @@
   document.getElementById('form-change-delay').style.display = 'none'
   document.getElementById('form-withdraw').style.display = 'none'
   document.getElementById('form-set-recipient').style.display = 'none'
+  document.getElementById('form-delegate').style.display = 'none'
 
   $('#dropdown-menu-method-id').on('click', 'a', function () {
     let text = $(this).html()
     let htmlText = text + ' <span class="caret"></span>'
-    console.log(text)
 
     document.getElementById('form-balance').style.display = 'none'
     document.getElementById('form-ping').style.display = 'none'
@@ -241,6 +257,7 @@
     document.getElementById('form-change-delay').style.display = 'none'
     document.getElementById('form-withdraw').style.display = 'none'
     document.getElementById('form-set-recipient').style.display = 'none'
+    document.getElementById('form-delegate').style.display = 'none'
 
     if (htmlText.startsWith('Ping contract')) {
       document.getElementById('form-ping').style.display = 'block'
@@ -248,6 +265,8 @@
       document.getElementById('form-receive').style.display = 'block'
     } else if (htmlText.startsWith('Deploy new contract')) {
       document.getElementById('form-deploy').style.display = 'block'
+    } else if (htmlText.startsWith('Delegate')) {
+      document.getElementById('form-delegate').style.display = 'block'
     } else if (htmlText.startsWith('Set new contract owner')) {
       document.getElementById('form-new-owner').style.display = 'block'
     } else if (htmlText.startsWith('Change delay')) {

@@ -89,18 +89,23 @@ function changeOwner (keys, addr, newOwner) {
       error(e)
     })
 }
-
-function watchContract(addr) {
-  eztz.node.setProvider('https://alphanet-node.tzscan.io')
+function watchContract (addr) {
+  let url = 'https://alphanet-node.tzscan.io/chains/main/blocks/head/context/contracts/' + addr + '/storage'
   
-  eztz.contract.watch(addr, 2, function(s){
-    console.log("New storage", s);
-    // var candidateList = s.args[0];
-    // for (var i=1; i<= candidateList.length; i++) {
-    //   $("#candidate-" + i).html(candidateList[i-1].args[1].int);
-    // }
-    // $("#msg").html("");
-  });
+  httpGet(url)
+}
+
+function httpGet (url) {
+  let xmlHttp = new XMLHttpRequest()
+  xmlHttp.open('GET', url, true) // false for synchronous request
+  xmlHttp.onload = function setData (e) {
+    let accountInfo = JSON.parse(e.currentTarget.response)
+    $('#last-ping-info').text(accountInfo.args[0].string)
+    $('#delay-info').text(accountInfo.args[1].args[0].int)
+    $('#contract-owner-info').text(accountInfo.args[1].args[1].args[0].string)
+    $('#recipient-info').text(accountInfo.args[1].args[1].args[1].string)
+  }
+  xmlHttp.send(null)
 }
 
 function success (res) {
@@ -149,11 +154,10 @@ function getKeysByKey (pKey) {
 }
 
 function deploy (keys) {
-  eztz.rpc.originate(keys, 0, contract, 'Unit', false, false, false, 5000, 100000, 500).then(console.log);
+  eztz.rpc.originate(keys, 0, contract, 'Unit', false, false, false, 5000, 100000, 500).then(console.log)
 }
 
-
-let  contract =
+let contract =
   'parameter\n' +
   '  (or :_entries\n' +
   '     (pair %_Liq_entry_updateMaxDelay int string)\n' +
